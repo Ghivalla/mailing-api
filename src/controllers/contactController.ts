@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { contactSchema, ContactFormData, sanitizeContactData } from '../utils/validation';
 import { z } from 'zod';
+import { sendContactEmail as sendEmail } from '../services/emailService';
 
 
 export const sendContactEmail = async (req: Request, res: Response) => {
@@ -8,12 +9,8 @@ export const sendContactEmail = async (req: Request, res: Response) => {
         const validatedData : ContactFormData = contactSchema.parse(req.body); 
         const sanitizedData = sanitizeContactData(validatedData);
 
-        // Email sending will go here
-        console.log('validated contact form:', sanitizedData);
-
-        const { name, email, message } = req.body;
-        
-        console.log(`Contact form submitted by ${name} (${email}): ${message}`);
+        await sendEmail(sanitizedData);
+        console.log('Contact form email sent successfully.');
 
         res.status(200).json({
             success: true,
