@@ -10,8 +10,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "types": ["vitest/globals"]
   },
-  "include": ["src/**/*"],
+"include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist", "tests"]
 }
