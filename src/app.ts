@@ -1,9 +1,9 @@
-
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { config } from "./config/env";
 import contactRoutes from "./routes/contactRoutes";
+import { httpLogger } from "./middleware/logger";
 
 const app = express();
 
@@ -24,8 +24,12 @@ app.use(
     }),
 );
 
+// HTTP request logger
+app.use(httpLogger);
+
 // limit body request to 15kb
 app.use(express.json({ limit: '15kb' }));
+
 
 // Health Check
 app.get("/health", (req, res) => {

@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { config } from "../config/env";
 import type { ContactFormData } from "../utils/validation";
+import { logger } from "../config/logger";
 
 let transporter: nodemailer.Transporter | null = null;
 
@@ -10,7 +11,7 @@ const createTransporter = async (): Promise<nodemailer.Transporter> => {
 
     // If SMTP credentials are provided, use them
     if (config.smtp.host && config.smtp.user && config.smtp.pass) {
-        console.log("Using configured SMTP server:", config.smtp.host);
+        logger.info({ host: config.smtp.host }, 'Using configured SMTP server');
         return nodemailer.createTransport({
             host: config.smtp.host,
             port: config.smtp.port,
@@ -23,12 +24,10 @@ const createTransporter = async (): Promise<nodemailer.Transporter> => {
     }
 
     // Otherwise, create a test account with Ethereal
-    console.log("No SMTP configured, creating Ethereal test account...");
+    logger.info('No SMTP configured, creating Ethereal test account');
     const testAccount = await nodemailer.createTestAccount();
 
-    console.log("Ethereal account created:");
-    console.log("  User:", testAccount.user);
-    console.log("  Preview URL: https://ethereal.email/messages");
+    logger.info({ user: testAccount.user }, 'Ethereal test account created');
 
     return nodemailer.createTransport({
         host: "smtp.ethereal.email",
@@ -79,7 +78,12 @@ ${data.message}`.trim(),
 
     // Log preview URL for Ethereal emails
     if (config.nodeEnv === "development") {
-        console.log("Message sent:", info.messageId);
-        console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
+        const previewUrl = nodemailer.getTestMessageUrl(info);
+        logger.info({
+            messageId: info.messageId,
+            previewUrl
+        }, 'Email sent successfully');
+    } else {
+        logger.info({ messageId: info.messageId }, 'Email sent successfully');
     }
 };
