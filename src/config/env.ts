@@ -9,22 +9,18 @@ export const config = {
     cors: {
         allowedOrigins: process.env.ALLOWED_ORIGINS
             ? process.env.ALLOWED_ORIGINS.split(",")
-            : ["http://localhost:3000", "http://localhost:3001"],
+            : ["https://ghivalla.com", "http://dev.ghivalla.com"],
     },
 
     // Email configuration
     email: {
-        from: process.env.EMAIL_FROM || "noreply@ghivalla.com",
+        from: process.env.EMAIL_FROM || "ghivalla@ghivalla.com",
         to: process.env.EMAIL_TO || "ghivalla@gmail.com", // Your receiving email
     },
 
-    // SMTP configuration (optional in development, Ethereal will be used as fallback)
-    smtp: {
-        host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT || "587"),
-        secure: process.env.SMTP_SECURE === "true",
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+    // Resend API configuration
+    resend: {
+        apiKey: process.env.RESEND_API_KEY || "",
     },
 
     // Rate limiting ( 5 requests per 15 minutes)

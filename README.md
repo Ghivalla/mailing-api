@@ -78,7 +78,7 @@ mailing-api/
 - **express** - Web framework
 - **typescript** - Type safety
 - **zod** - Runtime validation
-- **nodemailer** - Email sending
+- **resend** - Email sending via modern API
 - **dotenv** - Environment variables
 
 ### Security
@@ -103,7 +103,7 @@ mailing-api/
 ### Prerequisites
 - Node.js 18+
 - npm or yarn
-- SMTP credentials (Gmail, SendGrid, etc.) or use Ethereal for testing
+- Resend API key (get one free at [resend.com](https://resend.com))
 
 ### 1. Clone and Install
 
@@ -135,18 +135,18 @@ RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=5
 
 # Email settings
-EMAIL_FROM=noreply@example.com
+EMAIL_FROM=noreply@example.com  # Must be a verified domain in Resend
 EMAIL_TO=your-email@example.com
 
-# SMTP Configuration
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
+# Resend API Configuration
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxx
 ```
 
-**Note**: For Gmail, you need to use an [App Password](https://support.google.com/accounts/answer/185833), not your regular password.
+**Important Notes:**
+- Get your Resend API key from [resend.com/api-keys](https://resend.com/api-keys)
+- Use `re_test_` prefix keys for development (test mode - emails won't actually send)
+- Use production keys for live email sending
+- The `EMAIL_FROM` address must use a domain you've verified in Resend
 
 ### 3. Development
 
